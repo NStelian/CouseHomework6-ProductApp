@@ -13,11 +13,13 @@ import static org.springframework.http.HttpMethod.GET;
 
 @Service
 public class ProductService {
+    private final String baseUrl = "http://localhost:8080/products";
+
     public List<Product> getAllProducts() {
         RestTemplate restTemplate = new RestTemplate();
 
         return restTemplate.exchange(
-                "http://localhost:8080/products",
+                baseUrl,
                 GET,
                 new HttpEntity<>(null),
                 new ParameterizedTypeReference<List<Product>>() {
@@ -28,14 +30,14 @@ public class ProductService {
     public Product getProductById(int productId) {
         RestTemplate restTemplate = new RestTemplate();
 
-        return restTemplate.getForObject("http://localhost:8080/products/" + productId, Product.class);
+        return restTemplate.getForObject(baseUrl + "/" + productId, Product.class);
     }
 
     public List<Product> getProductsByCategory(Category category) {
         RestTemplate restTemplate = new RestTemplate();
 
         return restTemplate.exchange(
-                "http://localhost:8080/products/category/" + category,
+                baseUrl + "?category=" + category,
                 GET,
                 new HttpEntity<>(null),
                 new ParameterizedTypeReference<List<Product>>() {
@@ -47,7 +49,7 @@ public class ProductService {
         RestTemplate restTemplate = new RestTemplate();
 
         return restTemplate.exchange(
-                "http://localhost:8080/products/maxPrice/" + maxPrice,
+                baseUrl + "?maxPrice=" + maxPrice,
                 GET,
                 new HttpEntity<>(null),
                 new ParameterizedTypeReference<List<Product>>() {
@@ -58,12 +60,12 @@ public class ProductService {
     public Product addProduct(Product newProduct) {
         RestTemplate restTemplate = new RestTemplate();
 
-        return restTemplate.postForObject("http://localhost:8080/products", newProduct, Product.class);
+        return restTemplate.postForObject(baseUrl, newProduct, Product.class);
     }
 
     public void deleteProductById(int productId) {
         RestTemplate restTemplate = new RestTemplate();
 
-        restTemplate.delete("http://localhost:8080/products/" + productId, Product.class);
+        restTemplate.delete(baseUrl + "/" + productId, Product.class);
     }
 }

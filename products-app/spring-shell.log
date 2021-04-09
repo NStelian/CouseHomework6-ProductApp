@@ -1,2 +1,7 @@
 1617878560042:help
 1617878568431:print-all-products
+1617991005778:help
+1617991010006:print-all-products
+1617991018936:print-product-by-category
+1617991026318:print-product-by-max-price
+1617991153887:print-product-by-id

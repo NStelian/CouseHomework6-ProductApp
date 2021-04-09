@@ -16,24 +16,14 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    List<Product> getProducts() {
-        return service.getAllProducts();
+    List<Product> getProducts(@RequestParam(required=false) Category category, @RequestParam(required=false) Double maxPrice) {
+        return service.getAllProducts(category, maxPrice);
     }
 
     @GetMapping("{productId}")
     Product getProductById(@PathVariable long productId) {
         return service.getProductById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find product with id " + productId));
-    }
-
-    @GetMapping("category/{category}")
-    List<Product> getProductsByCategory(@PathVariable Category category) {
-        return service.getProductsByCategory(category);
-    }
-
-    @GetMapping("maxPrice/{maxPrice}")
-    List<Product> getProductWithMaxPrice(@PathVariable double maxPrice) {
-        return service.getProductsWithMaxPrice(maxPrice);
     }
 
     @PostMapping

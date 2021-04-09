@@ -16,24 +16,26 @@ import static java.util.stream.Collectors.toList;
 public class ProductService {
     private final ProductRepository repository;
 
-    public List<Product> getAllProducts() {
-        return repository.findAll();
+    public List<Product> getAllProducts(Category category, Double maxPrice) {
+        List<Product> products = repository.findAll();
+
+        if (category != null) {
+            products = products.stream()
+                    .filter(product -> product.getCategory().equals(category))
+                    .collect(toList());
+        }
+
+        if (maxPrice != null) {
+            products = products.stream()
+                    .filter(product -> product.getPrice() <= maxPrice)
+                    .collect(toList());
+        }
+
+        return products;
     }
 
     public Optional<Product> getProductById(long productId) {
         return repository.findById(productId);
-    }
-
-    public List<Product> getProductsByCategory(Category category) {
-        return repository.findAll().stream()
-                .filter(product -> product.getCategory().equals(category))
-                .collect(toList());
-    }
-
-    public List<Product> getProductsWithMaxPrice(double maxPrice) {
-        return repository.findAll().stream()
-                .filter(product -> product.getPrice() <= maxPrice)
-                .collect(toList());
     }
 
     public Product addProduct(Product product) {
